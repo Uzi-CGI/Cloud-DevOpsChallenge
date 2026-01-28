@@ -1,0 +1,9 @@
+# certificates (local only)
+certs/
+
+# docker
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
