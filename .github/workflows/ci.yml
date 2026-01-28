@@ -1,0 +1,31 @@
+name: HelloCGI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  nginx-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t hello-cgi .
+
+      - name: Run container
+        run: |
+          docker run -d --name hello-cgi-test \
+            -p 8080:80 \
+            -v ${{ github.workspace }}/site:/usr/share/nginx/html:ro \
+            hello-cgi
+          sleep 3
+
+      - name: Smoke test
+        run: curl -f http://localhost:8080
+
+      - name: Cleanup
+        if: always()
+        run: docker stop hello-cgi-test
