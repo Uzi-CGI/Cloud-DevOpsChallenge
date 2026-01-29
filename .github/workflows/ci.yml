@@ -17,8 +17,6 @@ jobs:
 
       - name: Run container
         run: |
-          # ensure no old container present (safe)
-          docker rm -f hello-cgi-test 2>/dev/null || true
           docker run -d --name hello-cgi-test \
             -p 8080:80 \
             -v ${{ github.workspace }}/site:/usr/share/nginx/html:ro \
@@ -28,12 +26,6 @@ jobs:
       - name: Smoke test
         run: curl -f http://localhost:8080
 
-      - name: Show logs on failure
-        if: failure()
-        run: docker logs hello-cgi-test --tail 200 || true
-
       - name: Cleanup
         if: always()
-        run: |
-          docker stop hello-cgi-test 2>/dev/null || true
-          docker rm -f hello-cgi-test 2>/dev/null || true
+        run: docker stop hello-cgi-test
