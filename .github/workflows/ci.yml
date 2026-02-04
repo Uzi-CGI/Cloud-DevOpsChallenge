@@ -20,7 +20,7 @@ jobs:
           docker run -d --name hello-cgi-test \
             -p 8080:80 \
             -v ${{ github.workspace }}/site:/usr/share/nginx/html:ro \
-            hello-cgi 1234
+            hello-cgi
           sleep 3
 
       - name: Smoke test
